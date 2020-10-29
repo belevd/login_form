@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   Route,
   BrowserRouter as Router,
@@ -11,10 +11,6 @@ import LogIn from "./LogIn";
 import Registration from "./Registration";
 
 export default function Main() {
-  console.log(useSelector((state) => state));
-  const dispatch = useDispatch();
-  <button onClick={() => dispatch({ type: "SET_LOGGED" })}>Залогиниться</button>
-  console.log(useSelector((state) => state.login));
   return (
     <Router>
       <Switch>
@@ -25,8 +21,14 @@ export default function Main() {
             <Home />
           )}
         </Route>
-        <Route exact path="/login" component={LogIn} />
-        <Route exact path="/registration" component={Registration} />
+        <Route path="/login">
+          {useSelector((state) => state.login.token) ? (
+            <Redirect to="/" component={Home} />
+          ) : (
+            <LogIn />
+          )}
+        </Route>
+        <Route path="/registration" component={Registration} />
       </Switch>
     </Router>
   );
