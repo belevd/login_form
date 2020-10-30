@@ -1,11 +1,8 @@
 import { post } from "api";
 import { setLogged } from "../../redux/actions";
 
-export const SendData = (url, login, password, dispatch) => {
-  const userData = {
-    email: login,
-    password: password,
-  };
-  const token = post(url, userData).then(data => data.token);
-  dispatch(setLogged(token));
-}
+export const SendData = (url, data, dispatch) => {
+  post(url, data).then((data) => {
+    dispatch(setLogged(data.token));
+  });
+};

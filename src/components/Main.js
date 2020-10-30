@@ -11,16 +11,16 @@ import { LogIn } from "./Login/LogIn";
 import { Registration } from "./Login/Registration";
 
 export const Main = () => {
-  let isLogged = useSelector((state) => state.login.token);
+  let token = useSelector((state) => state.login.token);
 
   return (
     <Router>
       <Switch>
         <Route exact path="/">
-          {!isLogged ? <Redirect to="/login" component={LogIn} /> : <Home />}
+          {!token ? <Redirect to="/login" component={LogIn} /> : <Home />}
         </Route>
         <Route path="/login">
-          {isLogged ? <Redirect to="/" component={Home} /> : <LogIn />}
+          {token ? <Redirect to="/" component={Home} /> : <LogIn />}
         </Route>
         <Route path="/registration" component={Registration} />
       </Switch>
