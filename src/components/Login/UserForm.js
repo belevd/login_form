@@ -6,13 +6,15 @@ import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 export const UserForm = ({ buttonText, url }) => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit,formState } = useForm({ mode: 'onChange' });
   let history = useHistory();
   const dispatch = useDispatch();
   const onSubmit = (data) => {
     SendData(url, data, dispatch);
     history.push("/");
   };
+
+  console.log("isValid", formState.isValid);
 
   return (
     <div>
@@ -24,10 +26,9 @@ export const UserForm = ({ buttonText, url }) => {
           </Form.Label>
           <Col sm="6">
             <Form.Control
-              type="email"
               placeholder="Введите email"
               name="email"
-              ref={register({ required: true })}
+              ref={register({ required: true, pattern: `^\S+@\S+$` })}
             />
           </Col>
         </Form.Group>
@@ -38,15 +39,14 @@ export const UserForm = ({ buttonText, url }) => {
           </Form.Label>
           <Col sm="6">
             <Form.Control
-              type="password"
               placeholder="Введите пароль"
               name="password"
-              ref={register({ required: true })}
+              ref={register({ required: true, minLength: 6 })}
             />
           </Col>
         </Form.Group>
         <div className="d-flex justify-content-center">
-          <Button variant="outline-info" type="submit">
+          <Button variant="outline-info" type="submit" disabled={!formState.isValid}>
             {buttonText}
           </Button>
         </div>
