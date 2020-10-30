@@ -1,20 +1,13 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Button, Container, Form } from "react-bootstrap";
-import { setLogged } from "../redux/actions";
+import { UserForm } from "./UserForm";
+import { SendData } from "./actions";
 import { useHistory } from "react-router-dom";
-import UserForm from "./UserForm";
+import { useDispatch } from "react-redux";
 
-export default function LogIn() {
-  let history = useHistory();
-
-  function handleClick() {
-    history.push("/");
-  }
-
+export const LogIn = () => {
   const [login, setLogin] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [error, setError] = React.useState("");
 
   function handleLogin(event) {
     setLogin(event.target.value);
@@ -24,28 +17,14 @@ export default function LogIn() {
     setPassword(event.target.value);
   }
 
+  let history = useHistory();
   const dispatch = useDispatch();
-  const instance = useSelector((state) => state.consts.instance);
 
   function handleSubmit(event) {
     event.preventDefault();
-    instance({
-      method: "post",
-      url: "api/login",
-      data: {
-        email: login,
-        password: password,
-      },
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          dispatch(setLogged(response.data.token));
-          handleClick();
-        }
-      })
-      .catch((error) => {
-        setError(error.toString());
-      });
+    const url = "api/login";
+    SendData(url, login, password, dispatch);
+    history.push("/");
   }
 
   return (
@@ -69,10 +48,7 @@ export default function LogIn() {
             </Button>
           </div>
         </Form>
-        {error && (
-          <p className="text-center mt-4">Произошла ошибка : {error}</p>
-        )}
       </Container>
     </>
   );
-}
+};

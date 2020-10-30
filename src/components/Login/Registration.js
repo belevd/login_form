@@ -1,23 +1,13 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Button, Container, Form } from "react-bootstrap";
-import { setLogged } from "../redux/actions";
+import { UserForm } from "./UserForm";
+import { SendData } from "./actions";
 import { useHistory } from "react-router-dom";
-import UserForm from "./UserForm";
+import { useDispatch } from "react-redux";
 
-export default function Registration() {
-  let history = useHistory();
-
-  function handleClick() {
-    history.push("/");
-  }
-
+export const Registration = () => {
   const [login, setLogin] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [error, setError] = React.useState("");
-
-  const dispatch = useDispatch();
-  const instance = useSelector((state) => state.consts.instance);
 
   function handleLogin(event) {
     setLogin(event.target.value);
@@ -27,25 +17,14 @@ export default function Registration() {
     setPassword(event.target.value);
   }
 
+  let history = useHistory();
+  const dispatch = useDispatch();
+
   function handleSubmit(event) {
     event.preventDefault();
-    instance({
-      method: "post",
-      url: "api/register",
-      data: {
-        email: login,
-        password: password,
-      },
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          dispatch(setLogged(response.data.token));
-          handleClick();
-        }
-      })
-      .catch((error) => {
-        setError(error.toString());
-      });
+    const url = "api/register";
+    SendData(url, login, password, dispatch);
+    history.push("/");
   }
 
   return (
@@ -60,10 +39,7 @@ export default function Registration() {
             </Button>
           </div>
         </Form>
-        {error && (
-          <p className="text-center mt-4">Произошла ошибка : {error}</p>
-        )}
       </Container>
     </div>
   );
-}
+};

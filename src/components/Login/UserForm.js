@@ -1,7 +1,7 @@
 import React from "react";
 import { Col, Form, Row } from "react-bootstrap";
 
-export default function UserForm({handleLogin, handlePassword}) {
+export const UserForm = ({handleLogin, handlePassword}) => {
   return (
     <div>
       <Form.Group as={Row} controlId="logIn" className="mt-5">

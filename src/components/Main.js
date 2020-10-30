@@ -6,30 +6,24 @@ import {
   Switch,
   Redirect,
 } from "react-router-dom";
-import Home from "./Home";
-import LogIn from "./LogIn";
-import Registration from "./Registration";
+import { Home } from "./Home";
+import { LogIn } from "./Login/LogIn";
+import { Registration } from "./Login/Registration";
 
-export default function Main() {
+export const Main = () => {
+  let isLogged = useSelector((state) => state.login.token);
+
   return (
     <Router>
       <Switch>
         <Route exact path="/">
-          {!useSelector((state) => state.login.token) ? (
-            <Redirect to="/login" component={LogIn} />
-          ) : (
-            <Home />
-          )}
+          {!isLogged ? <Redirect to="/login" component={LogIn} /> : <Home />}
         </Route>
         <Route path="/login">
-          {useSelector((state) => state.login.token) ? (
-            <Redirect to="/" component={Home} />
-          ) : (
-            <LogIn />
-          )}
+          {isLogged ? <Redirect to="/" component={Home} /> : <LogIn />}
         </Route>
         <Route path="/registration" component={Registration} />
       </Switch>
     </Router>
   );
-}
+};
