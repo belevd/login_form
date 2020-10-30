@@ -3,18 +3,15 @@ import { Col, Form, Row, Button } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { SendData } from "./actions";
 import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { store } from "../../redux/store";
 
 export const UserForm = ({ buttonText, url }) => {
   const { register, handleSubmit, formState } = useForm({ mode: "onChange" });
   let history = useHistory();
-  const dispatch = useDispatch();
   const onSubmit = (data) => {
-    SendData(url, data, dispatch);
+    store.dispatch(SendData(url, data));
     history.push("/");
   };
-
-  console.log("isValid", formState.isValid);
 
   return (
     <div>
