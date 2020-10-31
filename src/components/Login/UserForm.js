@@ -25,7 +25,7 @@ export const UserForm = ({ buttonText, url }) => {
             <Form.Control
               placeholder="Введите email"
               name="email"
-              ref={register({ required: true, pattern: `^\S+@\S+$` })}
+              ref={register({ required: true, pattern: /^\S+@\S+$/ })}
             />
           </Col>
         </Form.Group>
