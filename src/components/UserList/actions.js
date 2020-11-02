@@ -1,13 +1,11 @@
 import { get } from 'api';
 
-export const loadUsers = (page, setLoading) => {
-    setLoading(true);
+export const loadUsers = (page) => {
     const url = '/api/users?page=' + page
-    return get(url).then((data) => data)
+    return get(url)
 }
 
-export const loadDefault = (setLoading) => {
-    setLoading(true);
+export const loadDefault = () => {
     const url = '/api/users?page=1'
-    return get(url).then(data => data)
+    return get(url)
 }

@@ -34,18 +34,24 @@ export const UserList = () => {
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({
     current: 1,
-    defaultPageSize: 6,
-    total: 12,
+    PageSize: 1,
+    total: 1,
   });
 
   React.useEffect(() => {
+    setLoading(true);
     loadDefault(setLoading).then((data) => {
+      setPagination({
+        PageSize: data.per_page,
+        total: data.total,
+      });
       setUsers(data.data);
       setLoading(false);
     });
   }, []);
 
   function handleTableChange(e) {
+    setLoading(true);
     loadUsers(e.current, setLoading).then((data) => {
       setUsers(data.data);
       setPagination({ ...pagination, current: e.current });
