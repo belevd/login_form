@@ -6,7 +6,7 @@ import {
   Switch,
   Redirect,
 } from "react-router-dom";
-import { Home } from "./Home";
+import { UserList } from "./UserList/UserList";
 import { LogIn } from "./Login/LogIn";
 import { Registration } from "./Login/Registration";
 
@@ -17,10 +17,10 @@ export const Main = () => {
     <Router>
       <Switch>
         <Route exact path="/">
-          {!token ? <Redirect to="/login" component={LogIn} /> : <Home />}
+          {!token ? <Redirect to="/login" component={LogIn} /> : <UserList />}
         </Route>
         <Route path="/login">
-          {token ? <Redirect to="/" component={Home} /> : <LogIn />}
+          {token ? <Redirect to="/" component={UserList} /> : <LogIn />}
         </Route>
         <Route path="/registration" component={Registration} />
       </Switch>

@@ -9,5 +9,5 @@ const instance = axios.create({
   },
 });
 
-export const get = (url, params = {}) => instance.get(url, { params }).then(({ data }) => data)
+export const get = (url) => instance.get(url).then(({ data }) => data)
 export const post = (url, data = {}) => instance.post(url, data).then(({ data }) => data)

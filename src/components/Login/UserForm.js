@@ -6,7 +6,9 @@ import { useHistory } from "react-router-dom";
 import { store } from "../../redux/store";
 
 export const UserForm = ({ buttonText, url }) => {
-  const { register, handleSubmit, formState } = useForm({ mode: "onChange" });
+  const { register, handleSubmit, formState, errors } = useForm({
+    mode: "onChange",
+  });
   let history = useHistory();
   const onSubmit = (data) => {
     store.dispatch(SendData(url, data));
@@ -25,8 +27,12 @@ export const UserForm = ({ buttonText, url }) => {
             <Form.Control
               placeholder="Введите email"
               name="email"
-              ref={register({ required: true, pattern: /^\S+@\S+$/ })}
+              ref={register({ required: true, pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/ })}
+              isInvalid={errors.email}
             />
+            <Form.Control.Feedback type="invalid">
+              Введите корректный email.
+            </Form.Control.Feedback>
           </Col>
         </Form.Group>
         <Form.Group as={Row} controlId="password">
@@ -40,7 +46,11 @@ export const UserForm = ({ buttonText, url }) => {
               placeholder="Введите пароль"
               name="password"
               ref={register({ required: true, minLength: 6 })}
+              isInvalid={errors.password}
             />
+            <Form.Control.Feedback type="invalid">
+              Пароль должен содержать не менее 6 символов.
+            </Form.Control.Feedback>
           </Col>
         </Form.Group>
         <div className="d-flex justify-content-center">
