@@ -12,7 +12,7 @@ export const UserForm = ({ buttonText, url }) => {
   let history = useHistory();
   const onSubmit = (data) => {
     store.dispatch(SendData(url, data));
-    history.push("/");
+    history.push("/users");
   };
 
   return (

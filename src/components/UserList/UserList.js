@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { loadUsers, loadDefault } from "./actions";
+import { loadUsers, loadDefault, showUser } from "./actions";
 import "antd/dist/antd.css";
 import { Table, Typography } from "antd";
+import { useHistory } from "react-router-dom";
 
 const { Title } = Typography;
 
@@ -30,6 +31,7 @@ const columns = [
 ];
 
 export const UserList = () => {
+  const history = useHistory();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({
@@ -69,6 +71,14 @@ export const UserList = () => {
         pagination={pagination}
         loading={loading}
         onChange={handleTableChange}
+        onRow={(record) => {
+          return {
+            onClick: () => {
+              const id = record.id;
+              history.push(`/users/${id}`);
+            },
+          };
+        }}
       />
     </div>
   );
