@@ -9,6 +9,12 @@
     margin-top: 30px;
 }
 
+.user__avatar {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
 .normal-text {
     font-weight: normal;
 }

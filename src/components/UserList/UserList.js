@@ -5,6 +5,7 @@ import { Table, Typography } from "antd";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { store } from "../../redux/store";
+import './UserList.css'
 
 const { Title } = Typography;
 
@@ -49,23 +50,23 @@ export const UserList = () => {
   React.useEffect(() => {
     setLoading(true);
     if (currentPage) {
-      loadUsers(currentPage).then((data) => {
+      loadUsers(currentPage).then((response) => {
         setPagination({
-          current: data.page,
-          PageSize: data.per_page,
-          total: data.total,
+          current: response.page,
+          PageSize: response.per_page,
+          total: response.total,
         });
-        setUsers(data.data);
+        setUsers(response.data);
         setLoading(false);
       });
     } else {
-      loadUsers(pagination.current).then((data) => {
+      loadUsers(pagination.current).then((response) => {
         setPagination({
           ...pagination,
-          PageSize: data.per_page,
-          total: data.total,
+          PageSize: response.per_page,
+          total: response.total,
         });
-        setUsers(data.data);
+        setUsers(response.data);
         setLoading(false);
       });
     }
@@ -73,8 +74,8 @@ export const UserList = () => {
 
   async function handleTableChange(e) {
     setLoading(true);
-    await loadUsers(e.current).then((data) => {
-      setUsers(data.data);
+    await loadUsers(e.current).then((response) => {
+      setUsers(response.data);
       setPagination({ ...pagination, current: e.current });
       setLoading(false);
     });
@@ -88,6 +89,7 @@ export const UserList = () => {
     <div>
       <Title className="text-center my-3">Список пользователей</Title>
       <Table
+        className="usersList"
         columns={columns}
         rowKey={(record) => record.id}
         dataSource={users}

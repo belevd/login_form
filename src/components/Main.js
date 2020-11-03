@@ -33,6 +33,7 @@ export const Main = () => {
           <Route exact path="/users" component={UserList} />
           <Route path="/users/:id" component={SingleUser} />
           <Route path="/registration" component={Registration} />
+          <Route component={UserList} />
         </Switch>
       </Router>
     );

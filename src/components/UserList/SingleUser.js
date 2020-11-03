@@ -9,12 +9,12 @@ const { Title } = Typography;
 
 export const SingleUser = (props) => {
   const history = useHistory();
-  const id = parseInt(props.match.params.id, 10);
+  const id = props.match.params.id;
   const [data, setData] = React.useState({});
 
   React.useEffect(() => {
-    loadUser(id).then((data) => {
-      setData(data.data);
+    loadUser(id).then((response) => {
+      setData(response.data);
     });
   }, []);
 
@@ -33,7 +33,7 @@ export const SingleUser = (props) => {
         </Col>
         <Col span={16}>
           <div className="user">
-            <Avatar size={80} icon={<Image width={100} src={data.avatar} />} />
+            <Avatar className="user__avatar" size={80} icon={<Image width={100} src={data.avatar} />} />
             <Title
               level={2}
               className="user__name"
