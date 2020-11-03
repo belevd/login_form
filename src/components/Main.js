@@ -7,26 +7,34 @@ import {
   Redirect,
 } from "react-router-dom";
 import { UserList } from "./UserList/UserList";
-import { SingleUser } from './UserList/SingleUser'
+import { SingleUser } from "./UserList/SingleUser";
 import { LogIn } from "./Login/LogIn";
 import { Registration } from "./Login/Registration";
 
 export const Main = () => {
   let token = useSelector((state) => state.login.token);
 
-  return (
-    <Router>
-      <Switch>
-        <Route exact path="/">
-          {!token ? <Redirect to="/login" component={LogIn} /> : <UserList />}
-        </Route>
-        <Route exact path="/users" component={UserList} />
-        <Route path="/users/:id" component={SingleUser} />
-        <Route path="/login">
-          {token ? <Redirect to="/users" component={UserList} /> : <LogIn />}
-        </Route>
-        <Route path="/registration" component={Registration} />
-      </Switch>
-    </Router>
-  );
+  if (!token) {
+    return (
+      <Router>
+        <Switch>
+          <Redirect exact from="/" to="/login" />
+          <Route path="/login" component={LogIn} />
+          <Route path="/registration" component={Registration} />
+          <Route component={LogIn} />
+        </Switch>
+      </Router>
+    );
+  } else {
+    return (
+      <Router>
+        <Switch>
+          <Redirect exact from='/' to="/users" />
+          <Route exact path="/users" component={UserList} />
+          <Route path="/users/:id" component={SingleUser} />
+          <Route path="/registration" component={Registration} />
+        </Switch>
+      </Router>
+    );
+  }
 };

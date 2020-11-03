@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { loadUsers, loadDefault, showUser } from "./actions";
+import { loadUsers, saveCurrent } from "./actions";
 import "antd/dist/antd.css";
 import { Table, Typography } from "antd";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { store } from "../../redux/store";
 
 const { Title } = Typography;
 
@@ -36,30 +38,51 @@ export const UserList = () => {
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({
     current: 1,
-    PageSize: 1,
-    total: 1,
+    PageSize: 6,
+    total: 12,
   });
+
+  let currentPage = useSelector(
+    (state) => state.setCurrentPageOfUsersList.page
+  );
 
   React.useEffect(() => {
     setLoading(true);
-    loadDefault(setLoading).then((data) => {
-      setPagination({
-        PageSize: data.per_page,
-        total: data.total,
+    if (currentPage) {
+      loadUsers(currentPage).then((data) => {
+        setPagination({
+          current: data.page,
+          PageSize: data.per_page,
+          total: data.total,
+        });
+        setUsers(data.data);
+        setLoading(false);
       });
-      setUsers(data.data);
-      setLoading(false);
-    });
+    } else {
+      loadUsers(pagination.current).then((data) => {
+        setPagination({
+          ...pagination,
+          PageSize: data.per_page,
+          total: data.total,
+        });
+        setUsers(data.data);
+        setLoading(false);
+      });
+    }
   }, []);
 
-  function handleTableChange(e) {
+  async function handleTableChange(e) {
     setLoading(true);
-    loadUsers(e.current, setLoading).then((data) => {
+    await loadUsers(e.current).then((data) => {
       setUsers(data.data);
       setPagination({ ...pagination, current: e.current });
       setLoading(false);
     });
   }
+
+  const savePage = () => {
+    store.dispatch(saveCurrent(pagination.current));
+  };
 
   return (
     <div>
@@ -74,6 +97,7 @@ export const UserList = () => {
         onRow={(record) => {
           return {
             onClick: () => {
+              savePage();
               const id = record.id;
               history.push(`/users/${id}`);
             },

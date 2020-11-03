@@ -4,7 +4,7 @@ const initialState = {
   token: '',
 };
 
-export default function login (state = initialState, action) {
+export const login = (state = initialState, action) => {
   switch (action.type) {
     case SET_LOGGED: {
       const token = action.payload;

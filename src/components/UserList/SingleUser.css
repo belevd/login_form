@@ -4,3 +4,21 @@
     flex-direction: column;
     align-items: center;
 }
+
+.user__name {
+    margin-top: 30px;
+}
+
+.normal-text {
+    font-weight: normal;
+}
+
+.navigationButton-right {
+    display: flex;
+    justify-content: flex-end;  
+}
+
+.button {
+    display: flex;
+    align-items: center;
+}
